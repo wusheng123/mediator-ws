@@ -1,5 +1,0 @@
--- 设置运维测试医院的订单统计任务
-INSERT INTO `tb_mediator_agent_task` (`gmt_created`, `gmt_modified`, `hospital_id`, `task_cmd`, `task_params`, `init`, `status`, `task_bean_name`, `crontab_expression`)
-VALUES
-	(now(), now(), 197, 'nonPlatformExamCount', '{\"action\":\"订单查询\",\"sql\":\"select COUNT(distinct his_bm) as \'订单数量\',order_type as \'订单来源\',CONVERT(char(10),exam_date,120) as \'体检日期\'from tbl_all_order_view where  CONVERT(char(10),exam_date,120) = (select CONVERT(char(10),GETDATE(),120)) and order_type = \'医院\' group by order_type,exam_date\"}', NULL, 2, 'databaseOperationTask', '0 56 15 ? * *'),
-	(now(), now(), 197, 'nonPlatformBookCount', '{\"action\":\"订单查询\",\"sql\":\"select COUNT(distinct his_bm) as \'订单数量\',order_type as \'订单来源\',CONVERT(char(10),insert_date,120) as \'下单日期\' from tbl_all_order_view where  CONVERT(char(10),insert_date,120) = (select CONVERT(char(10),GETDATE(),120)) and order_type = \'医院\' group by order_type,insert_date\"}', NULL, 2, 'databaseOperationTask', '0 56 15 ? * *');
