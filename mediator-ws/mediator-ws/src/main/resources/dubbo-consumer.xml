@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+       xmlns:context="http://www.springframework.org/schema/context"  
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+        http://www.springframework.org/schema/context  
+   	    http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+        http://code.alibabatech.com/schema/dubbo   
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    
+     <dubbo:consumer check="false" />
+     <!-- crm 应用暴露服务 -->
+   	 <dubbo:reference  id="syncCrmHisCompanyService" interface="com.mytijian.company.service.SyncCrmHisCompanyService" version="${dubbo_uic_consumer_version}"/>
+   	 <dubbo:reference  id="hospitalCompanyService" interface="com.mytijian.company.hospital.service.HospitalCompanyService" version="${dubbo_uic_consumer_version}"/>
+   	 <dubbo:reference  id="companyChangeLogService" interface="com.mytijian.company.service.CompanyChangeLogService" version="${dubbo_uic_consumer_version}"/>
+   	 <dubbo:reference  id="accountCompanyService" interface="com.mytijian.company.service.AccountCompanyService" version="${dubbo_uic_consumer_version}"/>
+   	 <dubbo:reference  id="managerCompanyRelationService" interface="com.mytijian.company.service.ManagerCompanyRelationService" version="${dubbo_uic_consumer_version}"/>
+   	 <dubbo:reference  id="companyAuthService" interface="com.mytijian.common.service.ResourceAuthService" version="${dubbo_uic_consumer_version}"/>
+   	 
+	 <!-- 对接依赖服务 -->
+     
+     <!-- offer服务 -->
+     <dubbo:reference id="examItemManageService"
+	interface="com.mytijian.offer.examitem.service.ExamItemManageService"
+	version="${dubbo_offer_provider_version}" />
+	
+	<dubbo:reference id="examItemService"
+		interface="com.mytijian.offer.examitem.service.ExamItemService"
+		version="${dubbo_offer_provider_version}" />
+	
+	<dubbo:reference id="mealService"
+		interface="com.mytijian.offer.meal.service.MealService" version="${dubbo_offer_provider_version}" />
+     <!-- offer服务 -->
+     
+     <dubbo:reference id="wxBindService" interface="com.mytijian.wx.service.WxBindService" version="${crm_dubbo_consumer_version}"/>
+     <dubbo:reference id="wxConfigService" interface="com.mytijian.wx.service.WxConfigService" version="${crm_dubbo_consumer_version}"/>
+     <dubbo:reference id="sendMessageService" interface="com.mytijian.message.service.SendMessageService" version="${crm_dubbo_consumer_version}"/>
+     
+     <dubbo:reference id="hospitalService" interface="com.mytijian.resource.service.HospitalService" version="${crm_dubbo_consumer_version}"/>
+     <dubbo:reference id="accountService" interface="com.mytijian.account.service.AccountService" version="${dubbo_uic_consumer_version}"/>
+     <dubbo:reference id="accountImportRegisterService" interface="com.mytijian.account.service.AccountImportRegisterService" version="${dubbo_uic_consumer_version}"/>
+     
+     <dubbo:reference id="orderForMediatorService" interface="com.mytijian.order.base.service.OrderForMediatorService" version="${crm_dubbo_consumer_version}"/>
+     
+   	 <dubbo:reference id="invoiceService" interface="com.mytijian.payment.service.InvoiceService" version="${crm_dubbo_consumer_version}"/>
+   	 
+   	 <!-- examreport应用暴露服务 -->
+   	 <dubbo:reference  id="syncExamReportService" interface="com.mytijian.report.service.SyncExamReportService" retries="0" timeout="20000" version="${examreport_dubbo_consumer_version}"/>
+   	
+   	 <!-- 订单service -->
+	 <dubbo:reference id="mongoOrderWriteService" interface="com.mytijian.order.base.mongo.MongoOrderWriteService" version="${order_dubbo_consumer_version}"/>
+   	 <dubbo:reference id="mongoOrderService" interface="com.mytijian.order.service.MongoOrderService" version="${order_dubbo_consumer_version}"/>
+   	 <dubbo:reference id="orderExportService" interface="com.mytijian.order.base.service.OrderExportService" version="${order_dubbo_consumer_version}"/>
+   	 <dubbo:reference id="orderService" interface="com.mytijian.order.service.OrderService" version="${order_dubbo_consumer_version}"/>
+   	 <dubbo:reference id="orderSyncService" interface="com.mytijian.order.base.service.OrderSyncService" version="${order_dubbo_consumer_version}"/>
+
+</beans>

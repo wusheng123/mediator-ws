@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mytijian.mediator.company.DAO.MediatorHisCompanyMapper">
+	<resultMap id="RM-MediatorHisCompanyDO" type="com.mytijian.mediator.company.DO.MediatorHisCompanyDO" >
+		<result column="id" property="id" javaType="java.lang.Integer" />
+		<result column="gmt_created" property="gmtCreated" javaType="java.util.Date" />
+		<result column="gmt_modified" property="gmtModified" javaType="java.util.Date" />
+		<result column="hospital_id" property="hospitalId" javaType="java.lang.Integer" />
+		<result column="my_company_id" property="myCompanyId" javaType="java.lang.Integer" />
+		<result column="his_company_code" property="hisCompanyCode" javaType="java.lang.String" />
+		<result column="his_company_name" property="hisCompanyName" javaType="java.lang.String" />
+		<result column="his_company_status" property="hisCompanyStatus" javaType="java.lang.String" />
+		<result column="creator" property="creator" javaType="java.lang.String" />
+	</resultMap>
+
+	<sql id="columnsWithOutId">
+		gmt_created,
+		gmt_modified,
+		hospital_id,
+		my_company_id,
+		his_company_code,
+		his_company_name,
+		his_company_status,
+		refresh,
+		creator
+	</sql>
+	<sql id="columnsWithId">
+		id,
+		<include refid="columnsWithOutId" />
+	</sql>
+
+	<insert id="insertHisCompany" parameterType="com.mytijian.mediator.company.DO.MediatorHisCompanyDO">
+		INSERT INTO tb_mediator_his_company(
+		<include refid="columnsWithOutId" />,is_deleted
+		)
+		VALUES( now(),
+		now(),
+		#{hospitalId},
+		#{myCompanyId},
+		#{hisCompanyCode},
+		#{hisCompanyName},
+		#{hisCompanyStatus},
+		#{refresh},
+		#{creator},
+		0
+		)
+	</insert>
+	<select id="selectHisCompanyList" resultMap="RM-MediatorHisCompanyDO">
+		SELECT
+		<include refid="columnsWithId" />
+		FROM tb_mediator_his_company
+		where
+			is_deleted = 0
+			<if test="idList != null">
+				AND id IN
+				<foreach item="item" collection="idList" open="(" close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+			<if test="hisCompanyStatusList != null">
+				AND his_company_status IN
+				<foreach item="item" collection="hisCompanyStatusList" open="("
+					close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+			<if test="hisCompanyCodeList != null">
+				AND his_company_code IN
+				<foreach item="item" collection="hisCompanyCodeList" open="("
+					close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+			<if test="hisCompanyNameList != null">
+				AND his_company_name IN
+				<foreach item="item" collection="hisCompanyNameList" open="("
+					close=")" separator=",">
+					#{item}
+				</foreach>
+			</if>
+			<if test="creator != null">
+				AND creator = #{creator}
+			</if>
+			<if test="hospitalId != null">
+				AND hospital_id = #{hospitalId}
+			</if>
+			<if test="refresh != null">
+				AND refresh = #{refresh}
+			</if>
+			<if test="hisCompanyCodeNotNull != null and hisCompanyCodeNotNull == true">
+				AND his_company_code IS NOT NULL
+			</if>
+			<if test="hisCompanyCodeNotNull != null and hisCompanyCodeNotNull == false">
+				AND his_company_code IS NULL
+			</if>
+	</select>
+	<update id="updateHisCompany">
+		UPDATE tb_mediator_his_company
+		set
+			gmt_modified = now()
+			<if test="toHisCompanyName != null"> ,his_company_name=#{toHisCompanyName}</if>
+			<if test="toHisCompanysStatus  != null">,his_company_status=#{toHisCompanysStatus}</if>
+			<if test="toRefresh  != null">,refresh=#{toRefresh}</if>
+			<if test="toHisCompanyCode != null">,his_company_code=#{toHisCompanyCode}</if>
+		where
+			is_deleted = 0
+			<if test="ids != null and ids.size > 0">
+				AND id IN
+				<foreach collection="ids" open="(" close=")" item="item" separator="," >
+					#{item}
+				</foreach>
+			</if>
+			<if test="ids != null and ids.size == 0">
+				AND id = -1
+			</if>
+			<if test="hospitalId != null">
+				AND hospital_id = #{hospitalId}
+			</if>
+			<!-- 兜底，保护bug等错误操作，导致所有数据被修改 -->
+			<if test="ids == null and hospitalId == null">
+				AND id = -1
+			</if>
+	</update>
+	<update id="deleteHisCompany">
+		UPDATE tb_mediator_his_company
+		SET is_deleted = 1,gmt_modified = now()
+		WHERE id IN 
+		<choose>
+			<when test="ids != null and ids.size > 0">
+				<foreach collection="ids" open="(" close=")" item="item" separator="," >
+					#{item}
+				</foreach>
+			</when>
+			<otherwise>
+				(-1)
+			</otherwise>
+		</choose>
+	</update>
+</mapper>

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mytijian.mediator.meal.DAO.MealSyncLogMapper">
+	<resultMap id="mealMap" type="com.mytijian.mediator.meal.model.MealSyncLog">
+		<result column="meal_id" property="mealId" jdbcType="INTEGER"/>
+		<result column="his_meal_id" property="hisMealId" jdbcType="VARCHAR"/>
+		<result column="hospital_id" property="hospitalId" jdbcType="INTEGER"/>
+		<result column="company_id" property="companyId" jdbcType="INTEGER"/>
+		<result column="his_name" property="hisName" jdbcType="VARCHAR"/>
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="DATE"/>
+		<result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<sql id="columns">
+		meal_id,
+		his_meal_id,
+		hospital_id,
+		company_id,
+		his_name,
+		status,
+		create_time,
+		update_time
+	</sql>
+	
+	<select id="selectByStatus" resultMap="mealMap">
+		select <include refid="columns"/>
+		from 
+			tb_mediator_meal_sync_log
+		where 
+			status = #{status}
+	</select>
+	
+	<select id="selectByStatusAndHospital" resultMap="mealMap">
+		select <include refid="columns"/>
+		from 
+			tb_mediator_meal_sync_log
+		where 
+			status = #{status}
+		and
+			hospital_id = #{hospitalId}
+	    limit 10
+	</select>
+	
+	<insert id="insertMealSyncLog" parameterType="com.mytijian.mediator.meal.model.MealSyncLog">
+		insert into 
+			tb_mediator_meal_sync_log(
+										meal_id,
+										his_meal_id,
+										hospital_id,
+										company_id,
+										his_name,
+										status,
+										create_time
+									)
+			values(
+					#{mealId},
+					#{hisMealId},
+					#{hospitalId},
+					#{companyId},
+					#{hisName},
+					#{status},
+					now()
+				)
+	</insert>
+	
+	<insert id="insertMealSyncLogList" parameterType="java.util.List">
+		insert into 
+			tb_mediator_meal_sync_log(
+										meal_id,
+										his_meal_id,
+										hospital_id,
+										company_id,
+										his_name,
+										status,
+										create_time
+									)
+		values
+		<foreach collection="list" item="item" separator=",">
+			(
+				#{item.mealId},
+				#{item.hisMealId},
+				#{item.hospitalId},
+				#{item.companyId},
+				#{item.hisName},
+				#{item.status},
+				now()
+			)
+		</foreach>
+	</insert>
+	
+	<select id="selectByMealId" resultMap="mealMap">
+		select <include refid="columns"/>
+		from
+			tb_mediator_meal_sync_log
+		where 
+			meal_id = #{mealId}
+	</select>
+	
+	<update id="updateMealSyncLog">
+		update
+			tb_mediator_meal_sync_log
+		set 
+			company_id  = #{companyId},
+			status = #{status},
+			his_name = #{hisName},
+			update_time = now()
+		where
+			meal_id = #{mealId}
+	</update>
+	
+	<update id="updateHisMealId">
+		update
+			tb_mediator_meal_sync_log
+		set
+			his_meal_id = #{hisMealId},
+			status = #{status}
+		where
+			meal_id = #{mealId}
+	</update>
+	
+</mapper>

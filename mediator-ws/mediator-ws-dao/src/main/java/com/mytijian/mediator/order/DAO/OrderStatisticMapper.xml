@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mytijian.mediator.order.DAO.OrderStatisticMapper">
+
+	<resultMap id="orderStatisticMap" type="com.mytijian.mediator.order.DO.OrderStatisticDO">
+		<id property="id" column="id"/>
+		<result property="gmtCreated" column="gmt_created" />
+		<result property="gmtModified" column="gmt_modified" />
+		<result property="hospitalId" column="hospital_id" />
+		<result property="taskId" column="task_id"/>
+		<result property="statisticsItem" column="statistics_item" />
+		<result property="param" column="param" />
+		<result property="result" column="result" />
+		<result property="format" column="format"/>
+	</resultMap>
+	
+	<sql id="columns_without_id">
+		gmt_created,
+		gmt_modified,
+		hospital_id,
+		task_id,
+		statistics_item,
+		param,
+		result,
+		format
+	</sql>
+	
+	<insert id = "insert" parameterType = "com.mytijian.mediator.order.DO.OrderStatisticDO">
+		insert into 
+			tb_mediator_order_statistics (<include refid="columns_without_id"/>)
+		values (
+			now(),
+			now(),
+			#{hospitalId},
+			#{taskId},
+			#{statisticsItem},
+			#{param},
+			#{result},
+			#{format}
+			)
+	</insert>
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+  <classPathEntry 
+		location="D:\.m2\repository\mysql\mysql-connector-java\5.1.27\mysql-connector-java-5.1.27.jar" /> 
+  <context id="context1">
+    		<jdbcConnection connectionURL="jdbc:mysql://qa.mytijian.cn/crm_qa?useUnicode=true" driverClass="com.mysql.jdbc.Driver" password="qa_root" userId="qa_root" />
+		    <javaModelGenerator targetPackage="com.mytijian.mediator.api.dto" targetProject="mediator-ws-service" >
+		   		  <property name="enableSubPackages" value="true"/>  
+		    </javaModelGenerator>
+		    <sqlMapGenerator targetPackage="com.mytijian.mediator.service.mapper" targetProject="mediator-ws-service" >
+		    	 <property name="enableSubPackages" value="true"/>  
+		    </sqlMapGenerator>
+		    <javaClientGenerator targetPackage="com.mytijian.mediator.service.mapper" targetProject="mediator-ws-service" type="XMLMAPPER" >
+		    	 <property name="enableSubPackages" value="true"/>  
+		    </javaClientGenerator>
+		  	 
+		  	 <table tableName="tb_mediator_agent_task" domainObjectName="MediatorAgentTaskModel" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+		  	 	<generatedKey column="id" sqlStatement="MySql" identity="true"/>
+		  	 	
+		  	 </table>
+     </context>
+</generatorConfiguration>
+  

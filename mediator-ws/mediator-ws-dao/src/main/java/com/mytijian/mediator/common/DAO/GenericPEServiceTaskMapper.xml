@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mytijian.mediator.common.DAO.GenericPEServiceTaskMapper">
+	<resultMap id="configResultMap" type="com.mytijian.mediator.common.DO.GenericPEServiceTaskDO" >
+		<result column="id" property="id" jdbcType="INTEGER"/>
+		<result column="hospital_id" property="hospitalId" jdbcType="INTEGER"/>
+		<result column="task_name" property="taskName" jdbcType="VARCHAR"/>
+		<result column="task_params" property="taskParams" jdbcType="VARCHAR"/>
+		<result column="task_switch" property="taskSwitch" jdbcType="TINYINT"/>
+		<result column="crontab_expression" property="crontabExpression" jdbcType="VARCHAR"/>
+		<result column="gmt_created" property="gmtCreated" jdbcType="TIMESTAMP"/>
+		<result column="gmt_modified" property="gmtModified" jdbcType="TIMESTAMP"/>
+	</resultMap>
+	
+	<select id="selectTaskConfigByHospitalId" resultMap="configResultMap">
+		select id,
+		       hospital_id,
+		       task_name,
+		       task_params,
+		       task_switch,
+		       crontab_expression,
+		       gmt_created,
+		       gmt_modified
+		FROM tb_mediator_genericpeservice_task 
+		where hospital_id = #{hospitalId}
+	</select>
+</mapper>

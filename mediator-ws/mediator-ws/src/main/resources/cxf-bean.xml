@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:tns="http://service.api.mediator.mytijian.com/" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans  
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd  
+     http://www.springframework.org/schema/context  
+   	 http://www.springframework.org/schema/context/spring-context-3.0.xsd  
+   	 http://www.springframework.org/schema/tx
+   	 http://www.springframework.org/schema/tx/spring-tx.xsd 
+     http://www.springframework.org/schema/mvc  
+     http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+	 http://cxf.apache.org/jaxws 
+	 http://cxf.apache.org/schemas/jaxws.xsd
+	 http://cxf.apache.org/jaxrs
+     http://cxf.apache.org/schemas/jaxrs.xsd
+     http://www.springframework.org/schema/util 
+     http://www.springframework.org/schema/util/spring-util.xsd">
+
+	<jaxws:endpoint id="mediatorWS"
+		implementor="com.mytijian.mediator.service.impl.MediatorServiceImpl"
+		address="/mediatorService" serviceName="tns:MediatorService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+
+		<jaxws:inInterceptors>
+		    <ref bean="wss4jInInterceptor"/> 
+		    <ref bean="securityInInterceptor" />
+			<ref bean="soapHeaderInterceptor" />
+			<ref bean="loggingInInterceptor"/>
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+		    <ref bean="securityOutInterceptor"/>
+			<ref bean="wss4jOutInterceptor"/>
+		    <ref bean="loggingOutInterceptor" />
+			<ref bean="soapHeaderOutInterceptor" />
+		</jaxws:outInterceptors>
+		
+		<jaxws:properties>
+			<!-- This flag is set password validation or not -->
+			<entry key="ws-security.validate.token" value="false" />
+			<entry key="faultStackTraceEnabled" value="true" />
+			<entry key="exceptionMessageCauseEnabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="commonWS"
+		implementor="com.mytijian.mediator.service.impl.CommonServiceImpl"
+		address="/commonService" serviceName="tns:CommonService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+
+		<jaxws:inInterceptors>
+		    <ref bean="wss4jInInterceptor"/> 
+		    <ref bean="securityInInterceptor" />
+			<ref bean="soapHeaderInterceptor" />
+		</jaxws:inInterceptors>	
+		<jaxws:outInterceptors>
+		    <ref bean="securityOutInterceptor"/>
+			<ref bean="wss4jOutInterceptor"/>
+			<ref bean="soapHeaderOutInterceptor" />
+		</jaxws:outInterceptors>
+		<jaxws:properties>
+			<!-- This flag is set password validation or not -->
+			<entry key="ws-security.validate.token" value="false" />
+			<entry key="faultStackTraceEnabled" value="true" />
+			<entry key="exceptionMessageCauseEnabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="upgradeWS"
+		implementor="com.mytijian.mediator.service.impl.UpgradeServiceImpl"
+		address="/upgradeService" serviceName="tns:UpgradeService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+
+		<jaxws:inInterceptors>
+		    <ref bean="wss4jInInterceptor"/> 
+		    <ref bean="securityInInterceptor" />
+			<ref bean="soapHeaderInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+		    <ref bean="securityOutInterceptor"/>
+			<ref bean="wss4jOutInterceptor"/>
+			<ref bean="soapHeaderOutInterceptor" />
+		</jaxws:outInterceptors>
+		<jaxws:properties>
+			<!-- This flag is set password validation or not -->
+			<entry key="ws-security.validate.token" value="false" />
+			<entry key="faultStackTraceEnabled" value="true" />
+			<entry key="exceptionMessageCauseEnabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="examCompanyWS"
+		implementor="com.mytijian.mediator.service.impl.MediatorExamCompanyServiceImpl"
+		address="/examCompanyService" serviceName="tns:MediatorExamCompanyService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+
+		<jaxws:inInterceptors>
+		    <ref bean="wss4jInInterceptor"/> 
+		    <ref bean="securityInInterceptor" />
+			<ref bean="soapHeaderInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+		    <ref bean="securityOutInterceptor"/>
+			<ref bean="wss4jOutInterceptor"/>
+			<ref bean="soapHeaderOutInterceptor" />
+		</jaxws:outInterceptors>
+		<jaxws:properties>
+			<!-- This flag is set password validation or not -->
+			<entry key="ws-security.validate.token" value="false" />
+			<entry key="faultStackTraceEnabled" value="true" />
+			<entry key="exceptionMessageCauseEnabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	
+	<jaxws:endpoint id="syncExamReportWS"
+		implementor="com.mytijian.mediator.service.impl.MediatorSyncExamReportServiceImpl"
+		address="/mediatorSyncExamReportService" serviceName="tns:MediatorSyncExamReportService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+
+		<jaxws:inInterceptors>
+			<ref bean="wss4jInInterceptor"/> 
+		    <ref bean="securityInInterceptor" />
+			<ref bean="soapHeaderInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+		    <ref bean="securityOutInterceptor"/>
+			<ref bean="wss4jOutInterceptor"/>
+			<ref bean="soapHeaderOutInterceptor" />
+		</jaxws:outInterceptors>
+		<jaxws:properties>
+			<entry key="ws-security.validate.token" value="false" />
+			<entry key="faultStackTraceEnabled" value="true" />
+			<entry key="exceptionMessageCauseEnabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="mediatorTaskManagerServiceWS"
+		implementor="com.mytijian.mediator.service.impl.MediatorTaskManagerServiceImpl"
+		address="/mediatorTaskManagerService" serviceName="tns:MediatorTaskManagerService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+
+		<jaxws:inInterceptors>
+		    <ref bean="wss4jInInterceptor"/> 
+		    <ref bean="securityInInterceptor" />
+			<ref bean="soapHeaderInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+		    <ref bean="securityOutInterceptor"/>
+			<ref bean="wss4jOutInterceptor"/>
+			<ref bean="soapHeaderOutInterceptor" />
+		</jaxws:outInterceptors>
+		<jaxws:properties>
+			<!-- This flag is set password validation or not -->
+			<entry key="ws-security.validate.token" value="false" />
+			<entry key="faultStackTraceEnabled" value="true" />
+			<entry key="exceptionMessageCauseEnabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	<jaxws:endpoint id="examQueueServiceWs"
+		implementor="com.mytijian.mediator.service.impl.ExamQueueChangeServiceImpl"
+		address="/examQueueService" serviceName="tns:ExamQueueService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+
+		<jaxws:inInterceptors>
+			<ref bean="wss4jInInterceptor"/> 
+		    <ref bean="securityInInterceptor" />
+			<ref bean="soapHeaderInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+		    <ref bean="securityOutInterceptor"/>
+			<ref bean="wss4jOutInterceptor"/>
+			<ref bean="soapHeaderOutInterceptor" />
+		</jaxws:outInterceptors>
+		<jaxws:properties>
+			<!-- This flag is set password validation or not -->
+			<entry key="ws-security.validate.token" value="false" />
+			<entry key="faultStackTraceEnabled" value="true" />
+			<entry key="exceptionMessageCauseEnabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	<jaxws:endpoint id="mediatorSyncHisCompanyServiceWS"
+		implementor="com.mytijian.mediator.company.outer.service.impl.MediatorSyncHisCompanyServiceImpl"
+		address="/mediatorSyncHisCompanyService" serviceName="tns:MediatorSyncHisCompanyService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+		
+		<jaxws:inInterceptors>
+		    <ref bean="wss4jInInterceptor"/> 
+		    <ref bean="securityInInterceptor" />
+		    <ref bean="soapHeaderInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+		    <ref bean="securityOutInterceptor"/>
+			<ref bean="wss4jOutInterceptor"/>
+			<ref bean="soapHeaderOutInterceptor" />
+			<ref bean="loggingOutInterceptor"/>
+		</jaxws:outInterceptors>
+		<jaxws:properties>
+			<!-- This flag is set password validation or not -->
+			<entry key="ws-security.validate.token" value="false" />
+			<entry key="faultStackTraceEnabled" value="true" />
+			<entry key="exceptionMessageCauseEnabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	
+	<jaxws:endpoint id="mediatorSyncMealServiceWS"
+		implementor="com.mytijian.mediator.meal.outer.service.impl.MediatorSyncMealServiceImpl"
+		address="/mediatorSyncMealService" serviceName="tns:MediatorSyncMealService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+
+		<jaxws:inInterceptors>
+		    <ref bean="wss4jInInterceptor"/> 
+		    <ref bean="securityInInterceptor" />
+			<ref bean="soapHeaderInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+		    <ref bean="securityOutInterceptor"/>
+			<ref bean="wss4jOutInterceptor"/>
+			<ref bean="soapHeaderOutInterceptor" />
+		</jaxws:outInterceptors>
+		<jaxws:properties>
+			<!-- This flag is set password validation or not -->
+			<entry key="ws-security.validate.token" value="false" />
+			<entry key="faultStackTraceEnabled" value="true" />
+			<entry key="exceptionMessageCauseEnabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+
+	<jaxws:endpoint id="mediatorSyncPrintOrderServiceWS"
+		implementor="com.mytijian.mediator.order.outer.service.impl.MediatorSyncPrintOrderServiceImpl"
+		address="/mediatorSyncPrintOrderService" serviceName="tns:MediatorSyncPrintOrderService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+
+		<jaxws:inInterceptors>
+		    <ref bean="wss4jInInterceptor"/> 
+		    <ref bean="securityInInterceptor" />
+			<ref bean="soapHeaderInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+		    <ref bean="securityOutInterceptor"/>
+			<ref bean="wss4jOutInterceptor"/>
+			<ref bean="soapHeaderOutInterceptor" />
+		</jaxws:outInterceptors>
+		<jaxws:properties>
+			<!-- This flag is set password validation or not -->
+			<entry key="ws-security.validate.token" value="false" />
+			<entry key="faultStackTraceEnabled" value="true" />
+			<entry key="exceptionMessageCauseEnabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	
+	
+	<jaxws:endpoint id="mediatorSyncOrderServiceWS"
+		implementor="com.mytijian.mediator.order.outer.service.impl.MediatorSyncOrderServiceImpl"
+		address="/mediatorSyncOrderService" serviceName="tns:MediatorSyncOrderService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+
+		<jaxws:inInterceptors>
+		    <ref bean="wss4jInInterceptor"/> 
+		    <ref bean="securityInInterceptor" />
+			<ref bean="soapHeaderInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+		    <ref bean="securityOutInterceptor"/>
+			<ref bean="wss4jOutInterceptor"/>
+			<ref bean="soapHeaderOutInterceptor" />
+		</jaxws:outInterceptors>
+		<jaxws:properties>
+			<!-- This flag is set password validation or not -->
+			<entry key="ws-security.validate.token" value="false" />
+			<entry key="faultStackTraceEnabled" value="true" />
+			<entry key="exceptionMessageCauseEnabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	
+		<jaxws:endpoint id="mediatorImageUploadServiceWS"
+		implementor="com.mytijian.mediator.service.impl.MediatorImageUploadServiceImpl"
+		address="/mediatorImageUploadService" serviceName="tns:MediatorImageUploadService">
+		<jaxws:features>
+			<bean class="org.apache.cxf.feature.LoggingFeature" />
+		</jaxws:features>
+
+		<jaxws:inInterceptors>
+		    <ref bean="wss4jInInterceptor"/> 
+		    <ref bean="securityInInterceptor" />
+			<ref bean="soapHeaderInterceptor" />
+		</jaxws:inInterceptors>
+		<jaxws:outInterceptors>
+		    <ref bean="securityOutInterceptor"/>
+			<ref bean="wss4jOutInterceptor"/>
+		    <ref bean="loggingOutInterceptor" />
+			<ref bean="soapHeaderOutInterceptor" />
+		</jaxws:outInterceptors>
+		
+		<jaxws:properties>
+			<!-- This flag is set password validation or not -->
+			<entry key="ws-security.validate.token" value="false" />
+			<entry key="faultStackTraceEnabled" value="true" />
+			<entry key="exceptionMessageCauseEnabled" value="true" />
+		</jaxws:properties>
+	</jaxws:endpoint>
+	
+	
+	<bean id="authenticationInterceptor"
+		class="org.apache.cxf.interceptor.security.JAASLoginInterceptor">
+		<property name="contextName" value="karaf" />
+	</bean>
+	<!-- 
+	<jaxrs:server address="/hello">
+        <jaxrs:serviceBeans>
+            <ref bean="testRestfulService"/>
+        </jaxrs:serviceBeans>
+    </jaxrs:server>
+     -->
+    <bean id="soapHeaderInterceptor" class="com.mytijian.mediator.ws.SoapHeaderInterceptor" />
+	<bean id="soapHeaderOutInterceptor" class="com.mytijian.mediator.ws.SoapHeaderOutInterceptor"/>
+	
+	<bean id="wss4jInInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor">
+		<constructor-arg>
+			<map>
+				<entry key="action" value="Signature Encrypt"/>
+				<entry key="passwordCallbackClass" value="com.mytijian.mediator.ws.ServicePasswordCallback"/>
+				<entry key="decryptionPropFile" value="server_privateKey.properties"/>
+				<entry key="signaturePropFile" value="user_publicKey.properties"/>
+			</map>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="wss4jOutInterceptor" class="org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor">
+		<constructor-arg>
+		    <map>
+		        <entry key="action" value="Signature Encrypt"/>
+		        <entry key="user" value="serverprivatekey"/>
+		        <entry key="passwordCallbackClass" value="com.mytijian.mediator.ws.ServicePasswordCallback"/>
+		        <entry key="encryptionUser" value="clientpublickey" />
+		        <entry key="signaturePropFile" value="server_privateKey.properties" />
+		        <entry key="encryptionPropFile" value="user_publicKey.properties" />
+		    </map>		
+		</constructor-arg>
+	</bean>
+	<bean id="securityOutInterceptor" class="com.mytijian.mediator.ws.SecurityOutInterceptor" />
+	<bean id="securityInInterceptor" class="com.mytijian.mediator.ws.SecurityInInterceptor" />
+	<bean id="loggingInInterceptor" class="org.apache.cxf.interceptor.LoggingInInterceptor" />
+	<bean id="loggingOutInterceptor" class="org.apache.cxf.interceptor.LoggingOutInterceptor" />
+</beans>

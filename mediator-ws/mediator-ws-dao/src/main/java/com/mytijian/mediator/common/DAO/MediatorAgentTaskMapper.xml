@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mytijian.mediator.common.DAO.MediatorAgentTaskMapper">
+	<resultMap id="BaseResultMap"
+		type="com.mytijian.mediator.common.DO.MediatorAgentTaskDO">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="gmt_created" jdbcType="TIMESTAMP" property="gmtCreated" />
+		<result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified" />
+		<result column="hospital_id" jdbcType="INTEGER" property="hospitalId" />
+		<result column="task_cmd" jdbcType="VARCHAR" property="taskCmd" />
+		<result column="task_params" jdbcType="VARCHAR" property="taskParams" />
+		<result column="init" jdbcType="TINYINT" property="init" />
+		<result column="status" jdbcType="TINYINT" property="status" />
+		<result column="task_bean_name" jdbcType="VARCHAR" property="taskBeanName"/>
+		<result column="crontab_expression" jdbcType="VARCHAR" property="cronExpression"/>
+	</resultMap>
+	<sql id="column_without_id">
+		gmt_created, 
+		gmt_modified, 
+		hospital_id, 
+		task_cmd, 
+		task_params, 
+		init, 
+		status, 
+		task_bean_name,
+		crontab_expression, 
+		province_id
+	</sql>
+	<sql id="column_with_id">
+		id,
+		<include refid="column_without_id"></include>
+	</sql>
+	<select id="selectMediatorAgentTaskDOByHospitalId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		SELECT 	<include refid="column_with_id" />
+		FROM 	tb_mediator_agent_task
+		WHERE 	hospital_id = #{hospitalId} and status = 1
+	</select>
+	<insert id="insert" parameterType="com.mytijian.mediator.common.DO.MediatorAgentTaskDO">
+		INSERT INTO tb_mediator_agent_task(<include refid="column_without_id" />)
+		VALUES(
+			now(),
+			now(),
+			#{hospitalId},
+			#{taskCmd},
+			#{taskParams},
+			#{init},
+			#{status},
+			#{taskBeanName},
+			#{cronExpression},
+			#{provinceId}
+		)
+	</insert>
+	<select id="updateInit">
+		UPDATE tb_mediator_agent_task
+		SET init=#{init},gmt_modified=now()
+		WHERE id=#{taskId}
+	</select>
+	
+	<!-- 获取订单任务列表 -->
+	<select id="getAgentTask" resultMap="BaseResultMap" parameterType="hashmap">
+		select <include refid="column_with_id" />
+		from tb_mediator_agent_task
+		<where>
+			<if test="hospitalId!=null">
+				and hospital_id=#{hospitalId}
+			</if>
+			<if test="status!=null">
+				and status=#{status}
+			</if>
+			<if test="taskCmd!=null">
+				and task_cmd=#{taskCmd}
+			</if>
+		</where>
+		<if test="startIndex!=null and pageSize!=null">
+			limit startIndex, pageSize
+		</if>
+		order by hospital_id asc
+	</select>
+	
+	<!-- 更新订单任务信息 " -->
+	<update id="updateAgentTaskStatus">
+		update tb_mediator_agent_task set status=#{status}, gmt_modified=NOW()
+		where hospital_id=#{hospitalId} and task_cmd=#{taskCmd}
+	</update>
+	
+	<select id="selectAllTasks" resultMap="BaseResultMap">
+		select <include refid="column_with_id" />
+		from 
+			tb_mediator_agent_task
+		order by hospital_id desc
+	</select>
+	
+	<select id="countByHospId" resultType="Integer">
+		select count(1)
+		from 
+			tb_mediator_agent_task
+		where
+			hospital_id = #{hospitalId}
+	</select>
+	
+	<select id="selectByHospitalId" resultMap="BaseResultMap">
+		select <include refid="column_with_id" />
+		from 
+			tb_mediator_agent_task
+		where 
+			hospital_id = #{hospitalId}
+	</select>
+	
+	<select id="selectHospitalIds" resultType="Integer">
+		select DISTINCT(hospital_id)  from tb_mediator_agent_task 
+	</select>
+	
+	<update id="updateTaskParam">
+		update tb_mediator_agent_task
+		set 
+			task_params = #{taskParam}
+		where
+			hospital_id = #{hospitalId}
+		and
+			task_cmd = #{taskCmd}
+	</update>
+	
+	<update id="updateTaskCrontabExp">
+		update tb_mediator_agent_task
+		set 
+			crontab_expression = #{crontabExp}
+		where
+			hospital_id = #{hospitalId}
+		and
+			task_cmd = #{taskCmd}
+	</update>
+	
+	<select id="selectTaskHospitals" resultType="Integer" 
+			parameterType="com.mytijian.mediator.common.param.ListTaskHospitalDaoQuery">
+		select DISTINCT(hospital_id) from tb_mediator_agent_task
+			<where>
+				<if test="provinceIds != null and provinceIds.size() > 0">
+					province_id in
+					<foreach collection="provinceIds" index="index" item="provinceId"
+						open="(" separator="," close=")">
+						#{provinceId}
+					</foreach>
+				</if>
+			</where>
+			<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+			</if>
+	</select>
+
+	<select id="countTaskHospitals" resultType="Integer"
+		parameterType="com.mytijian.mediator.common.param.ListTaskHospitalDaoQuery">
+		select count(DISTINCT(hospital_id)) from tb_mediator_agent_task
+		<where>
+			<if test="provinceIds != null and provinceIds.size() > 0">
+				province_id in
+				<foreach collection="provinceIds" index="index" item="provinceId"
+					open="(" separator="," close=")">
+					#{provinceId}
+				</foreach>
+			</if>
+		</where>
+	</select>
+	
+</mapper>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.mytijian.mediator.order.DAO.MediatorOrderPrintHistMapper">
+	<resultMap id="mediatorOrderPrintHisMap" type="com.mytijian.mediator.order.model.MediatorOrderPrintHist">
+		<id column="order_id" property="orderId" jdbcType="INTEGER" />
+		<result column="order_num" property="orderNum" jdbcType="VARCHAR" />
+		<result column="hospital_id" property="hospitalId" jdbcType="INTEGER" />
+		<result column="create_time" property="createTime" jdbcType="DATE" />
+		<result column="update_time" property="updateTime" jdbcType="DATE" />
+		<result column="print_status" property="printStatus" jdbcType="INTEGER" />
+		<result column="is_print" property="isPrint" jdbcType="INTEGER" />
+		<result column="add_his_queue" property="addHISQueue" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="columns">
+		order_id,
+		order_num,
+		hospital_id,
+		create_time,
+		update_time,
+		print_status,
+		is_print,
+		add_his_queue
+	</sql>
+
+	<!-- 获取打印订单列表 -->
+	<select id="getMediatorHospitalOrderPrintByPage" resultMap="mediatorOrderPrintHisMap">
+		select
+		<include refid="columns" />
+		from tb_mediator_order_print_hist
+		where hospital_id = #{hospitalId}
+		and print_status=#{printStatus}
+	</select>
+	
+	<insert id="insert">
+		insert into
+		tb_mediator_order_print_hist (
+			order_id,
+			order_num,
+			hospital_id,
+			create_time,
+			update_time,
+			is_print
+			<if test="addHISQueue!=null">
+				,add_his_queue
+			</if>
+		) values
+			(
+			#{orderId},
+			#{orderNum},
+			#{hospitalId},
+			now(),
+			now(),
+			#{isPrint}
+			<if test="addHISQueue!=null">
+				,#{addHISQueue}
+			</if>
+			)
+	</insert>
+	
+	<!-- 批量更新订单打印状态 -->
+	<update id="updateOrderPrintByOrderNums">
+		update tb_mediator_order_print_hist set print_status=#{printStatus}, update_time= now()
+			WHERE order_num IN 
+		<choose>
+			<when test="orderNums != null and orderNums.size > 0">
+				<foreach collection="orderNums" open="(" close=")" item="orderNum" separator="," >
+					#{orderNum}
+				</foreach>
+			</when>
+		</choose>
+	</update>
+	
+	<update id="updateOrderPrintByOrderNum">
+		update tb_mediator_order_print_hist set print_status=#{printStatus}, update_time= now()
+			WHERE order_num = #{orderNum}
+	</update>
+	
+	<select id="getMediatorOrderPrintHisByOrderNum" resultType="INTEGER">
+		select count(1) from tb_mediator_order_print_hist where order_num=#{orderNum}
+	</select>
+	
+	<update id="updateMediatorOrderPrint">
+		update tb_mediator_order_print_hist set update_time= now()
+			<if test="printStatus!=null">
+				,print_status = #{printStatus}
+			</if>
+			<if test="isPrint!=null">
+				,is_print = #{isPrint}
+			</if>
+			<if test="addHISQueue!=null">
+				,add_his_queue=#{addHISQueue}
+			</if>
+		where order_num=#{orderNum} 
+	</update>
+	
+	<update id="updateOrderPrintByOrderIds">
+		update tb_mediator_order_print_hist set print_status=#{printStatus}, update_time= now()
+			WHERE order_id IN 
+		<choose>
+			<when test="orderIds != null and orderIds.size > 0">
+				<foreach collection="orderIds" open="(" close=")" item="orderId" separator="," >
+					#{orderId}
+				</foreach>
+			</when>
+		</choose>
+	</update>
+</mapper>

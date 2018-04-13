@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+  	<tb_heartbeat_log id="1" hospital_id="1" period="11" create_time="2015-12-24 20:34:18.0" update_time="2015-12-24 20:34:18.0"/>
+	<tb_upgrade_message id="1" hospital_id="1" curr_version="1" new_version="2"  package_file="hduujij" status="0" upgrade_time="2015-12-24 20:34:18.0"/>
+	<tb_sync_exam_report id="1" gmt_created="2016-08-15 12:12:12" gmt_modified="2016-08-15 12:12:12" hospital_id="2"  report_no="1212" order_num="12" 
+	idcard="12111" exam_time="2016-08-15 12:12:12" report_time="2016-08-15 12:12:12" mobile="12111" company_name="my" state="done" report_context="12"/>
+	<tb_his_info hospital_id = "1" his_name="lianzhong" engine_name="lianzhong"/>
+	<tb_mediator_agent_task id='1' hospital_id='1' task_cmd='1' province_id='120000'/>
+	<tb_mediator_his_company id="1"  hospital_id="1" gmt_created="2015-06-10 21:08:15.0" gmt_modified="2015-06-10 21:08:15.0"  
+	my_company_id="1" his_company_code="1"  his_company_name="testcompany" his_company_status="ADDING" creator="HIS" 
+	refresh="refreshing" is_deleted="0"/>
+	<tb_mediator_meal_sync_log meal_id="11"  his_meal_id="meal11" hospital_id="1" company_id="2888" status="0"
+	   create_time="2015-06-10 21:08:15.0" update_time="2015-06-10 21:08:15.0"/>
+	<tb_mediator_meal_sync_log meal_id="22"  his_meal_id="meal22" hospital_id="1" company_id="2888" status="0"
+	   create_time="2015-06-10 21:08:15.0" update_time="2015-06-10 21:08:15.0"/>
+	<tb_mediator_order_export_his export_id ="2"  hospital_id ="100" order_id="88" is_export="1" export_type="1" sequence="1" create_time="2016-11-28 16:02:59" update_time="2016-11-28 16:02:59" />
+	<tb_mediator_order_export_his export_id ="3"  hospital_id ="100" order_id="89" is_export="0" export_type="0" sequence="2" create_time="2016-11-28 16:02:59" update_time="2016-11-28 16:02:59" />
+	<tb_mediator_order_export_his export_id ="4"  hospital_id ="100" order_id="90" is_export="0" export_type="2" sequence="3" create_time="2016-11-28 16:02:59" update_time="2016-11-28 16:02:59" />
+	<tb_mediator_order_export_his export_id ="5"  hospital_id ="100" order_id="91" is_export="0" export_type="2" sequence="5" create_time="2016-11-28 16:02:59" update_time="2016-11-28 16:02:59" />
+	<tb_mediator_order_print_hist order_id ="5"  hospital_id ="100" order_num="1000000201612141117" print_status="0" />
+	<tb_mediator_order_print_hist order_id ="6"  hospital_id ="100" order_num="1000000201612141118" print_status="0" />
+	<tb_mediator_order_print_hist order_id ="7"  hospital_id ="100" order_num="1000000201612141119" print_status="1" />
+	<tb_mediator_agent_task_config task_cmd="order"/>
+	<tb_gray_setting id="1" hospital_id="1" status="1" create_time="2015-06-10 21:08:15.0" update_time="2015-06-10 21:08:15.0"/>
+	<tb_mediator_security_setting id="1" hospital_id="75" version="1" gmt_created="2015-06-10 21:08:15.0" gmt_modified="2015-06-10 21:08:15.0"/>
+	<tb_mediator_genericpeservice_task id="1" hospital_id="147" task_name="searchCheckInNewOrder" task_switch="2" />
+</dataset>
